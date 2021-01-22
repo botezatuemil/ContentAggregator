@@ -4,7 +4,7 @@ import praw
 import time
 import smtplib
 
-emailAggregator = []
+emailAggregator = [] * 10
 
 reddit = praw.Reddit(
     client_id = 'UcrUFaWeSgDdNg',
@@ -13,6 +13,12 @@ reddit = praw.Reddit(
     username = 'IohannesMatrix',
     password = 'quoraforlife14!'
 )
+
+def emaillog():
+    conn = smtplib.SMTP('smtp.gmail.com', 587)  # define the object
+    print(conn.ehlo())  # make the connection to the server
+    print((conn.starttls()))  # encrypt the email
+    print(conn.login('btzemil@gmail.com', 'emil14pro'))
 
 def concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND):
     for i in range(numberPosts):
@@ -45,6 +51,7 @@ class towardsDataScience:
         post = 0
         numberPosts = 5
         myMessage = []
+        arguments = 4
         articles = []
 
         CYAN = '\033[96m'
@@ -53,7 +60,8 @@ class towardsDataScience:
         REDEND = '\033[0m'
 
         Subject = RED + 'See the hottest 5 python articles from towardsDataScience!' + REDEND + '\n'
-        
+        myMessage.append(Subject)
+
         for article in soup.find_all('div', class_='n p'):
             if post < numberPosts:
                 try:
@@ -69,7 +77,8 @@ class towardsDataScience:
             else:
                 break
         
-        
+        myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
+        print(myMessage)
 
     def toparticles(self):
         URL = 'https://towardsdatascience.com/tagged/python'
@@ -117,10 +126,10 @@ class towardsDataScience:
             return articles
 
         sort(articles) 
-        
+
         myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
         emailAggregator.append(myMessage)
-        print(emailAggregator)
+        print(myMessage)
 
 
 class freeCodeCamp():
@@ -134,41 +143,71 @@ class freeCodeCamp():
 
         post = 0
         numberPosts = 5
+        myMessage = []
+
+        CYAN = '\033[96m'
+        RED = '\033[93m'
+        CYANEND = '\033[0m'
+        REDEND = '\033[0m'
+
+        Subject = RED + 'See the top 5 python freecodecamp articles' + REDEND + '\n'
+
+        myMessage.append(Subject)
 
         for article in soup.find_all('article'):  
             if post < numberPosts: 
                 try:  
                     link = article.find('a', href=True)
-                    print('https://www.freecodecamp.org' + link['href'] + '\n\n') 
+                    myMessage.append(CYAN + 'https://www.freecodecamp.org' + link['href'] + CYANEND)
                 except:
                     continue
                 post += 1
             else:
                 break
-
+        
+        myMessage = '\n\n'.join(myMessage)
+        #emailAggregator.append(myMessage)
+        print(myMessage)
+    
 class Reddit():
 
     def learnprogramming(self):
 
         numberPosts = 5
         post = 0
+        arguments = 3
         myMessage = []
+        articles = []
+
+        CYAN = '\033[96m'
+        RED = '\033[93m'
+        CYANEND = '\033[0m'
+        REDEND = '\033[0m'
+        
+        Subject = RED + 'See the top 5 posts from learnprogramming!' + REDEND + '\n'
+
+        myMessage.append(Subject)
 
         for submission in reddit.subreddit('learnprogramming').top('day'):
             if post < numberPosts:
+                articles.append([str(submission.title), str(submission.score), str(submission.url)])
                 #print(str())
                 #myMessage.append((str(submission.title)) + ' Karma: ' + (str(submission.score)) + '\n' +  (str(submission.url)) + '\n\n')
                 post += 1
             else:
                 break
 
+        myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
         print(myMessage)
+
+    
     
 
 
 
 if __name__ == "__main__":
+    emaillog()
     #towardsDataScience().hotarticles()
-    towardsDataScience().toparticles()
+    #towardsDataScience().toparticles()
     #freeCodeCamp().hotarticles()
-    # Reddit().learnprogramming()
+    Reddit().learnprogramming()
