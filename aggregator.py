@@ -14,7 +14,23 @@ reddit = praw.Reddit(
     password = 'quoraforlife14!'
 )
 
- 
+def concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND):
+    for i in range(numberPosts):
+        for j in range(arguments):
+                if j == 0:
+                    articles[i][j] = CYAN + articles[i][j] + ' Likes: ' + articles[i][j + 1] + CYANEND + '\n'
+                else:
+                    articles[i][j] = articles[i][j] + '\n'
+        del articles[i][1]
+
+        
+    for i in range(numberPosts):
+        message = '\n'.join(articles[i])
+        myMessage.append(message)
+
+    myMessage = '\n\n'.join(myMessage)
+
+    return myMessage
 
 
 class towardsDataScience:
@@ -45,16 +61,15 @@ class towardsDataScience:
                     summary = article.p.text
                     link = article.find('a', href=True)
                     likes = article.find('button').text
-                    articles.append([headline, summary, link, href['likes']])
+                    articles.append([headline, likes, summary, link['href']])
 
-                    # print(headline + ' Likes: ' + likes + '\n')
-                    # print(summary + '\n')
-                    # print(link['href'] + '\n\n')  
                 except:
                     continue
                 post += 1
             else:
                 break
+        
+        
 
     def toparticles(self):
         URL = 'https://towardsdatascience.com/tagged/python'
@@ -102,22 +117,10 @@ class towardsDataScience:
             return articles
 
         sort(articles) 
-
-        for i in range(numberPosts):
-            for j in range(arguments):
-                    if j == 0:
-                       articles[i][j] = CYAN + articles[i][j] + ' Likes: ' + articles[i][j + 1] + CYANEND + '\n'
-                    else:
-                        articles[i][j] = articles[i][j] + '\n'
-            del articles[i][1]
-
         
-        for i in range(numberPosts):
-            message = '\n'.join(articles[i])
-            myMessage.append(message)
-
-        myMessage = '\n\n'.join(myMessage)
-        print(myMessage)
+        myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
+        emailAggregator.append(myMessage)
+        print(emailAggregator)
 
 
 class freeCodeCamp():
@@ -165,7 +168,7 @@ class Reddit():
 
 
 if __name__ == "__main__":
-    towardsDataScience().hotarticles()
-    #towardsDataScience().toparticles()
+    #towardsDataScience().hotarticles()
+    towardsDataScience().toparticles()
     #freeCodeCamp().hotarticles()
     # Reddit().learnprogramming()
