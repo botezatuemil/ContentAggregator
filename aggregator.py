@@ -56,10 +56,10 @@ class towardsDataScience:
         arguments = 4
         articles = []
 
-        CYAN = '\033[96m'
-        RED = '\033[93m'
-        CYANEND = '\033[0m'
-        REDEND = '\033[0m'
+        CYAN = ''
+        RED = ''
+        CYANEND = ''
+        REDEND = ''
 
         Subject = RED + 'See the hottest 5 python articles from towardsDataScience!' + REDEND + '\n'
         myMessage.append(Subject)
@@ -96,10 +96,10 @@ class towardsDataScience:
         arguments = 4
         myMessage = []
 
-        CYAN = '\033[96m'
-        RED = '\033[93m'
-        CYANEND = '\033[0m'
-        REDEND = '\033[0m'
+        CYAN = ''
+        RED = ''
+        CYANEND = ''
+        REDEND = ''
 
         Subject = RED + 'See the top 5 python articles from towardsDataScience!' + REDEND + '\n'
 
@@ -149,10 +149,10 @@ class freeCodeCamp():
         numberPosts = 5
         myMessage = []
 
-        CYAN = '\033[96m'
-        RED = '\033[93m'
-        CYANEND = '\033[0m'
-        REDEND = '\033[0m'
+        CYAN = ''
+        RED = ''
+        CYANEND = ''
+        REDEND = ''
 
         Subject = RED + 'See the top 5 python freecodecamp articles' + REDEND + '\n'
 
@@ -184,11 +184,16 @@ class Reddit():
         myMessage = []
         articles = []
 
-        CYAN = '\033[96m'
-        RED = '\033[93m'
-        CYANEND = '\033[0m'
-        REDEND = '\033[0m'
-        
+        # CYAN = '\033[96m'
+        # RED = '\033[93m'
+        # CYANEND = '\033[0m'
+        # REDEND = '\033[0m'
+
+        CYAN = ''
+        RED = ''
+        CYANEND = ''
+        REDEND = ''
+
         Subject = RED + 'See the top 5 posts from learnprogramming!' + REDEND + '\n'
 
         myMessage.append(Subject)
@@ -206,17 +211,61 @@ class Reddit():
         # print(myMessage)
         return myMessage
 
+    def Python(self):
+        numberPosts = 5
+        post = 0
+        arguments = 3
+        myMessage = []
+        articles = []
+
+        CYAN = ''
+        CYANEND = ''
+
+        Subject = 'See the top 5 posts from Python!' + '\n'
+
+        myMessage.append(Subject)
+
+        for submission in reddit.subreddit('Python').top('day'):
+            if post < numberPosts:
+                articles.append([str(submission.title), str(submission.score), str(submission.url)])
+                post += 1
+            else:
+                break
+
+        myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
+        return myMessage
+
+    def csCareerQuestions(self):
+        numberPosts = 5
+        post = 0
+        arguments = 3
+        myMessage = []
+        articles = []
+
+        CYAN = ''
+        CYANEND = ''
+
+        Subject = 'See the top 5 posts from cscareerquestions!' + '\n'
+
+        myMessage.append(Subject)
+
+        for submission in reddit.subreddit('cscareerquestions').top('day'):
+            if post < numberPosts:
+                articles.append([str(submission.title), str(submission.score), str(submission.url)])
+                post += 1
+            else:
+                break
+
+        myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
+        return myMessage
     
-    
-
-
-
 if __name__ == "__main__":
-
-    body = (towardsDataScience().hotarticles() + '\n').encode('utf-8').strip()
-   
-    #emailAggregator = emailAggregator + towardsDataScience().toparticles() + '\n'
-    #freeCodeCamp().hotarticles()
-    #Reddit().learnprogramming()
-    #print(emailAggregator)
-    emaillog(body)
+    body = ''
+    body = body + Reddit().Python() + '\n\n'
+    body = body + Reddit().learnprogramming() + '\n\n'
+    body = body + Reddit().csCareerQuestions() + '\n\n'
+    body = body + towardsDataScience().toparticles() + '\n\n'
+    body = body + towardsDataScience().hotarticles() + '\n\n'
+    body = body + freeCodeCamp().hotarticles() + '\n\n'
+    
+    emaillog(body.encode('utf-8').strip())
