@@ -3,6 +3,8 @@ import requests, lxml, html5lib, feedparser, re
 import praw
 import time
 import smtplib
+from email.message import EmailMessage
+
 
 reddit = praw.Reddit(
     client_id = 'UcrUFaWeSgDdNg',
@@ -12,12 +14,12 @@ reddit = praw.Reddit(
     password = 'quoraforlife14!'
 )
 
-def emaillog(emailAggregator):
+def emaillog(msg):
     conn = smtplib.SMTP('smtp.gmail.com', 587)  # define the object
     print(conn.ehlo())  # make the connection to the server
     print((conn.starttls()))  # encrypt the email
     print(conn.login('btzemil@gmail.com', 'emil14pro'))
-    conn.sendmail('btzemil@gmail.com', 'btzemil@gmail.com', emailAggregator)
+    conn.sendmail('btzemil@gmail.com', 'btzemil@gmail.com', msg)
     conn.quit()
 
 def concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND):
@@ -210,10 +212,11 @@ class Reddit():
 
 
 if __name__ == "__main__":
-    emailAggregator = towardsDataScience().hotarticles() + '\n'.encode('utf-8')
 
+    body = (towardsDataScience().hotarticles() + '\n').encode('utf-8').strip()
+   
     #emailAggregator = emailAggregator + towardsDataScience().toparticles() + '\n'
     #freeCodeCamp().hotarticles()
     #Reddit().learnprogramming()
     #print(emailAggregator)
-    emaillog(emailAggregator)
+    emaillog(body)
