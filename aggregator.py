@@ -3,8 +3,6 @@ import requests, lxml, html5lib, feedparser, re
 import praw
 import time
 import smtplib
-from email.message import EmailMessage
-
 
 reddit = praw.Reddit(
     client_id = 'your client id',
@@ -131,8 +129,6 @@ class towardsDataScience:
         sort(articles) 
 
         myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
-        #emailAggregator.append(myMessage)
-        #print(myMessage)
         return myMessage
 
 
@@ -170,8 +166,6 @@ class freeCodeCamp():
                 break
         
         myMessage = '\n\n'.join(myMessage)
-        #emailAggregator.append(myMessage)
-        #print(myMessage)
         return myMessage
     
 class Reddit():
@@ -183,11 +177,6 @@ class Reddit():
         arguments = 3
         myMessage = []
         articles = []
-
-        # CYAN = '\033[96m'
-        # RED = '\033[93m'
-        # CYANEND = '\033[0m'
-        # REDEND = '\033[0m'
 
         CYAN = ''
         RED = ''
@@ -201,14 +190,11 @@ class Reddit():
         for submission in reddit.subreddit('learnprogramming').top('day'):
             if post < numberPosts:
                 articles.append([str(submission.title), str(submission.score), str(submission.url)])
-                #print(str())
-                #myMessage.append((str(submission.title)) + ' Karma: ' + (str(submission.score)) + '\n' +  (str(submission.url)) + '\n\n')
                 post += 1
             else:
                 break
 
         myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
-        # print(myMessage)
         return myMessage
 
     def Python(self):
