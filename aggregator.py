@@ -4,8 +4,6 @@ import praw
 import time
 import smtplib
 
-emailAggregator = [] * 10
-
 reddit = praw.Reddit(
     client_id = 'UcrUFaWeSgDdNg',
     client_secret = 'LBUDzGudjPXWfTPgxwl4LfV1UJME2A',
@@ -14,11 +12,13 @@ reddit = praw.Reddit(
     password = 'quoraforlife14!'
 )
 
-def emaillog():
+def emaillog(emailAggregator):
     conn = smtplib.SMTP('smtp.gmail.com', 587)  # define the object
     print(conn.ehlo())  # make the connection to the server
     print((conn.starttls()))  # encrypt the email
     print(conn.login('btzemil@gmail.com', 'emil14pro'))
+    conn.sendmail('btzemil@gmail.com', 'btzemil@gmail.com', emailAggregator)
+    conn.quit()
 
 def concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND):
     for i in range(numberPosts):
@@ -78,7 +78,8 @@ class towardsDataScience:
                 break
         
         myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
-        print(myMessage)
+        #print(myMessage)
+        return myMessage
 
     def toparticles(self):
         URL = 'https://towardsdatascience.com/tagged/python'
@@ -128,8 +129,9 @@ class towardsDataScience:
         sort(articles) 
 
         myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
-        emailAggregator.append(myMessage)
-        print(myMessage)
+        #emailAggregator.append(myMessage)
+        #print(myMessage)
+        return myMessage
 
 
 class freeCodeCamp():
@@ -167,7 +169,8 @@ class freeCodeCamp():
         
         myMessage = '\n\n'.join(myMessage)
         #emailAggregator.append(myMessage)
-        print(myMessage)
+        #print(myMessage)
+        return myMessage
     
 class Reddit():
 
@@ -198,7 +201,8 @@ class Reddit():
                 break
 
         myMessage = concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND)
-        print(myMessage)
+        # print(myMessage)
+        return myMessage
 
     
     
@@ -206,8 +210,10 @@ class Reddit():
 
 
 if __name__ == "__main__":
-    emaillog()
-    #towardsDataScience().hotarticles()
-    #towardsDataScience().toparticles()
+    emailAggregator = towardsDataScience().hotarticles() + '\n'.encode('utf-8')
+
+    #emailAggregator = emailAggregator + towardsDataScience().toparticles() + '\n'
     #freeCodeCamp().hotarticles()
-    Reddit().learnprogramming()
+    #Reddit().learnprogramming()
+    #print(emailAggregator)
+    emaillog(emailAggregator)
