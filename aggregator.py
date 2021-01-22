@@ -7,19 +7,19 @@ from email.message import EmailMessage
 
 
 reddit = praw.Reddit(
-    client_id = 'UcrUFaWeSgDdNg',
-    client_secret = 'LBUDzGudjPXWfTPgxwl4LfV1UJME2A',
-    user_agent = 'redditPythonScrapper',
-    username = 'IohannesMatrix',
-    password = 'quoraforlife14!'
+    client_id = 'your client id',
+    client_secret = 'your client',
+    user_agent = 'your agent',
+    username = 'your username',
+    password = 'enter your password'
 )
 
 def emaillog(msg):
     conn = smtplib.SMTP('smtp.gmail.com', 587)  # define the object
     print(conn.ehlo())  # make the connection to the server
     print((conn.starttls()))  # encrypt the email
-    print(conn.login('btzemil@gmail.com', 'emil14pro'))
-    conn.sendmail('btzemil@gmail.com', 'btzemil@gmail.com', msg)
+    print(conn.login('email', 'password'))
+    conn.sendmail('email', 'email', msg)
     conn.quit()
 
 def concatenateContent(articles, myMessage, numberPosts, arguments, CYAN, CYANEND):
